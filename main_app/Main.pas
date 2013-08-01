@@ -23,7 +23,7 @@ unit Main;
 interface
 
 uses Windows, SysUtils, Classes, CrystalDxt, FastAlg, Vcl.Graphics, jpeg,
-  PNGImage, TPSDGraphics, Math;
+  PNGImage, TPSDGraphics, Math, TGA;
 
 procedure GetBitmap32bitBlock(const Handle: pointer; var BGRABlock: TBGRABlock;
   const X, Y: integer);
@@ -31,12 +31,12 @@ procedure GetBitmap24bitBlock(const Handle: pointer; var BGRABlock: TBGRABlock;
   const X, Y: integer);
 
 procedure SaveDDSImage(var Image: TBitmap; const name: string;
-  Format: AtfFormat);
+  Format: AtfFormat; isAlpha: boolean);
 procedure ConvertToATF(Filename, Targetname: string; Format: AtfFormat);
 
 var
   isDds: bool = false;
-  nomip: boolean = false;
+  nomip: bool = false;
 
 implementation
 
@@ -150,13 +150,13 @@ begin
     end;
   end;
 end;
-
+{
 procedure Dds2Atf(Filename, ext: string);
 begin
   stream.LoadFromFile(Filename);
   _convert(stream.Memory, pointer(integer(stream.Memory) + 128), stream.size,
     AnsiString(copy(Filename, 0, Length(Filename) - Length(ext)) + '.atf'));
-end;
+end;   }
 
 function IsPowerOf2(X: integer): boolean; inline;
 begin
@@ -179,7 +179,9 @@ end;
 procedure ConvertToATF(Filename, Targetname: string; Format: AtfFormat);
 var
   ext: string;
+  isAlpha: boolean;
 begin
+  isAlpha := false;
   if FileExists(Filename) then
   begin
     ext := ExtractFileExt(Filename);
@@ -198,6 +200,13 @@ begin
           begin
             temppng.LoadFromFile(Filename);
             tempbitmap.Assign(temppng);
+            isAlpha := hasPngAlpha(tempbitmap);
+          end;
+        'g': // tga
+          begin
+            tempbitmap.Free;
+            tempbitmap := LoadTgaImage(Filename);
+            isAlpha := hasTgaAlpha(tempbitmap);
           end;
         'm': // 'bmp'
           begin
@@ -221,13 +230,13 @@ begin
           Targetname := Targetname + '.atf';
       end;
 
-      SaveDDSImage(tempbitmap, Targetname, Format);
+      SaveDDSImage(tempbitmap, Targetname, Format, isAlpha);
     end;
   end;
 end;
 
 procedure SaveDDSImage(var Image: TBitmap; const name: string;
-  Format: AtfFormat);
+  Format: AtfFormat; isAlpha: boolean);
 var
   w: integer;
   h: integer;
@@ -236,7 +245,6 @@ var
   size: uint32;
   OriginalPF: TPixelFormat;
   Image32bit: TBitmap;
-  isAlpha: boolean;
   header: TDxtHeader;
   i: integer;
   filestr: TFileStream;
@@ -244,7 +252,6 @@ var
 begin
   // if not(Image.PixelFormat in [pf24bit, pf32Bit]) then
   // Image.PixelFormat := pf24bit;
-  isAlpha := hasAlpha(Image);
   if Format = Auto then
   begin
     if isAlpha then
@@ -357,7 +364,6 @@ tempjpeg := TJpegimage.Create;
 tempbitmap := TBitmap.Create;
 temppng := TPNGImage.Create;
 temppsd := TPSDGraphic.Create;
-stream := TMemoryStream.Create;
 Extensions := TStringList.Create;
 Extensions.Add('.psd');
 Extensions.Add('.png');
@@ -365,6 +371,7 @@ Extensions.Add('.bmp');
 Extensions.Add('.jpg');
 Extensions.Add('.jpe');
 Extensions.Add('.jpeg');
+Extensions.Add('.tga');
 
 finalization
 
@@ -374,6 +381,5 @@ tempbitmap.Free;
 temppng.Free;
 temppsd.Free;
 Extensions.Free;
-stream.Free;
 
 end.

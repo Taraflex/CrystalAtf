@@ -76,7 +76,7 @@
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
-        <Debugger_RunParams>-atf 01.jpeg-&gt;02.atf</Debugger_RunParams>
+        <Debugger_RunParams>-dds -nomip текстуры/*.* </Debugger_RunParams>
         <Icon_MainIcon>CrystalAtf_Icon.ico</Icon_MainIcon>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
@@ -88,7 +88,7 @@
         <DCC_DebugInformation>false</DCC_DebugInformation>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
-        <Debugger_RunParams>текстуры/*.* </Debugger_RunParams>
+        <Debugger_RunParams>-dds текстуры/*.* </Debugger_RunParams>
         <Icon_MainIcon>CrystalAtf_Icon.ico</Icon_MainIcon>
         <VerInfo_Locale>1033</VerInfo_Locale>
     </PropertyGroup>
@@ -130,6 +130,7 @@
   imzinflate in &apos;Vampyre Imaging Library\ZLib\imzinflate.pas&apos;,
   imzutil in &apos;Vampyre Imaging Library\ZLib\imzutil.pas&apos;;</Form>
         </DCCReference>
+        <DCCReference Include="TGA.pas"/>
         <None Include="ctypes.inc"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>

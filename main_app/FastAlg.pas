@@ -44,7 +44,8 @@ function ScanLineSize(var BMP: TBitmap): Integer;
 procedure Compress(var Src: TBitmap);
 procedure Bilinear32(var Src, Dst: TBitmap);
 procedure Bilinear24(var Src, Dst: TBitmap);
-function hasAlpha(var Src: TBitmap): Boolean;
+function hasPngAlpha(var Src: TBitmap): Boolean;
+function hasTgaAlpha(var Src: TBitmap): Boolean;
 procedure GetColor(var Src: TBitmap; Dst: Pointer; ColorSize: Byte = 4);
 
 implementation
@@ -184,12 +185,34 @@ begin
   end;
 end;
 
-function hasAlpha(var Src: TBitmap): Boolean;
+function hasTgaAlpha(var Src: TBitmap): Boolean;
 var
   y: uint32;
   x: uint32;
   src_pointer: PFColorA;
-  a: byte;
+  a: Byte;
+begin
+  if Src.PixelFormat = pf24bit then
+    Exit(false);
+  for y := 0 to Src.Height - 1 do
+  begin
+    src_pointer := Src.ScanLine[y];
+    for x := 0 to Src.Width - 1 do
+    begin
+      if (src_pointer.a < 255) and (src_pointer.a > 0) then
+        Exit(True);
+      Inc(src_pointer);
+    end;
+  end;
+  Result := false;
+end;
+
+function hasPngAlpha(var Src: TBitmap): Boolean;
+var
+  y: uint32;
+  x: uint32;
+  src_pointer: PFColorA;
+  a: Byte;
 begin
   Result := false;
   if Src.PixelFormat = pf24bit then
@@ -208,7 +231,7 @@ begin
       end
       else if a <> 255 then
       begin
-        Result := true;
+        Result := True;
         src_pointer.r := src_pointer.r * 255 div a;
         src_pointer.g := src_pointer.g * 255 div a;
         src_pointer.b := src_pointer.b * 255 div a;
@@ -317,7 +340,7 @@ begin
     POP     EDX
   end;
   if (i and (1 shl 23)) <> 0 then
-    Result := true;
+    Result := True;
 end;
 
 procedure BitmapAntialias2X(var SrcBitmap, DstBitmap: TBitmap);

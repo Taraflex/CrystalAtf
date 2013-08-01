@@ -15,7 +15,8 @@ uses
   Main in 'Main.pas',
   CrystalDXT in 'CrystalDXT.pas',
   FastAlg in 'FastAlg.pas',
-  TPSDGraphics in 'TPSDGraphics.pas';
+  TPSDGraphics in 'TPSDGraphics.pas',
+  TGA in 'TGA.pas';
 
 var
   format: AtfFormat = Auto;
