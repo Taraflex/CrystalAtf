@@ -63,7 +63,6 @@
         <DCC_UsePackage>dbexpress;IndyIPClient;bindcompdbx;bindcompfmx;CustomIPTransport;dsnap;IndyIPServer;rtl;dbrtl;IndySystem;IndyCore;bindcomp;inetdb;IndyIPCommon;DBXInterBaseDriver;inet;DataSnapCommon;xmlrtl;inetdbxpress;dbxcds;DbxCommonDriver;IndyProtocols;bindengine;soaprtl;$(DCC_UsePackage)</DCC_UsePackage>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
-        <UsePackages>true</UsePackages>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
         <DCC_UsePackage>vcl;$(DCC_UsePackage)</DCC_UsePackage>
@@ -77,7 +76,7 @@
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
-        <Debugger_RunParams>текстуры/*.* </Debugger_RunParams>
+        <Debugger_RunParams>-atf 01.jpeg-&gt;02.atf</Debugger_RunParams>
         <Icon_MainIcon>CrystalAtf_Icon.ico</Icon_MainIcon>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
@@ -89,7 +88,7 @@
         <DCC_DebugInformation>false</DCC_DebugInformation>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
-        <Debugger_RunParams>текстуры</Debugger_RunParams>
+        <Debugger_RunParams>текстуры/*.* </Debugger_RunParams>
         <Icon_MainIcon>CrystalAtf_Icon.ico</Icon_MainIcon>
         <VerInfo_Locale>1033</VerInfo_Locale>
     </PropertyGroup>
@@ -100,7 +99,37 @@
         <DCCReference Include="Main.pas"/>
         <DCCReference Include="CrystalDXT.pas"/>
         <DCCReference Include="FastAlg.pas"/>
-        <DCCReference Include="TPSDGraphics.pas"/>
+        <DCCReference Include="TPSDGraphics.pas">
+            <Form>Imaging in &apos;Vampyre Imaging Library\Imaging.pas&apos;,
+  ImagingBitmap in &apos;Vampyre Imaging Library\ImagingBitmap.pas&apos;,
+  ImagingCanvases in &apos;Vampyre Imaging Library\ImagingCanvases.pas&apos;,
+  ImagingClasses in &apos;Vampyre Imaging Library\ImagingClasses.pas&apos;,
+  ImagingColors in &apos;Vampyre Imaging Library\ImagingColors.pas&apos;,
+  ImagingComponents in &apos;Vampyre Imaging Library\ImagingComponents.pas&apos;,
+  ImagingDds in &apos;Vampyre Imaging Library\ImagingDds.pas&apos;,
+  ImagingFormats in &apos;Vampyre Imaging Library\ImagingFormats.pas&apos;,
+  ImagingGif in &apos;Vampyre Imaging Library\ImagingGif.pas&apos;,
+  ImagingIO in &apos;Vampyre Imaging Library\ImagingIO.pas&apos;,
+  ImagingNetworkGraphics
+    in &apos;Vampyre Imaging Library\ImagingNetworkGraphics.pas&apos;,
+  ImagingPortableMaps in &apos;Vampyre Imaging Library\ImagingPortableMaps.pas&apos;,
+  ImagingRadiance in &apos;Vampyre Imaging Library\ImagingRadiance.pas&apos;,
+  ImagingTarga in &apos;Vampyre Imaging Library\ImagingTarga.pas&apos;,
+  ImagingTypes in &apos;Vampyre Imaging Library\ImagingTypes.pas&apos;,
+  ImagingUtility in &apos;Vampyre Imaging Library\ImagingUtility.pas&apos;,
+  dzlib in &apos;Vampyre Imaging Library\ZLib\dzlib.pas&apos;,
+  imadler in &apos;Vampyre Imaging Library\ZLib\imadler.pas&apos;,
+  iminfblock in &apos;Vampyre Imaging Library\ZLib\iminfblock.pas&apos;,
+  iminfcodes in &apos;Vampyre Imaging Library\ZLib\iminfcodes.pas&apos;,
+  iminffast in &apos;Vampyre Imaging Library\ZLib\iminffast.pas&apos;,
+  iminftrees in &apos;Vampyre Imaging Library\ZLib\iminftrees.pas&apos;,
+  iminfutil in &apos;Vampyre Imaging Library\ZLib\iminfutil.pas&apos;,
+  impaszlib in &apos;Vampyre Imaging Library\ZLib\impaszlib.pas&apos;,
+  imtrees in &apos;Vampyre Imaging Library\ZLib\imtrees.pas&apos;,
+  imzdeflate in &apos;Vampyre Imaging Library\ZLib\imzdeflate.pas&apos;,
+  imzinflate in &apos;Vampyre Imaging Library\ZLib\imzinflate.pas&apos;,
+  imzutil in &apos;Vampyre Imaging Library\ZLib\imzutil.pas&apos;;</Form>
+        </DCCReference>
         <None Include="ctypes.inc"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>

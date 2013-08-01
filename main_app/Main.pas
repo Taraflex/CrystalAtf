@@ -1,7 +1,7 @@
 {
-2013-07-27
-Taratin Alexander
-Public domain
+  2013-07-27
+  Taratin Alexander
+  Public domain
 }
 
 unit Main;
@@ -22,8 +22,8 @@ unit Main;
 
 interface
 
-uses Windows, SysUtils, Classes, Graphics, CrystalDxt, FastAlg, PNGimage, jpeg,
-  TPSDGraphics, Math;
+uses Windows, SysUtils, Classes, CrystalDxt, FastAlg, Vcl.Graphics, jpeg,
+  PNGImage, TPSDGraphics, Math;
 
 procedure GetBitmap32bitBlock(const Handle: pointer; var BGRABlock: TBGRABlock;
   const X, Y: integer);
@@ -55,7 +55,7 @@ type
 
 var
   tempbitmap: TBitmap;
-  temppng: TPNGimage;
+  temppng: TPNGImage;
   tempjpeg: TJpegimage;
   temppsd: TPSDGraphic;
   Extensions: TStringList;
@@ -183,15 +183,16 @@ begin
   if FileExists(Filename) then
   begin
     ext := ExtractFileExt(Filename);
-    if (ext = '.dds') and (not isDds) then
+    { if (ext = '.dds') and (not isDds) then
       Dds2Atf(Filename, ext)
-    else if (Extensions.IndexOf(ext) > -1) then
+      else } if (Extensions.IndexOf(ext) > -1) then
     begin
       case ext[3] of
         's': // 'psd'
           begin
             temppsd.LoadFromFile(Filename);
             tempbitmap.Assign(temppsd);
+            tempbitmap.PixelFormat := pf24bit;
           end;
         'n': // 'png'
           begin
@@ -199,11 +200,15 @@ begin
             tempbitmap.Assign(temppng);
           end;
         'm': // 'bmp'
-          tempbitmap.LoadFromFile(Filename);
+          begin
+            tempbitmap.LoadFromFile(Filename);
+            tempbitmap.PixelFormat := pf24bit;
+          end;
         'p': // 'jpg' 'jpeg'
           begin
             tempjpeg.LoadFromFile(Filename);
             tempbitmap.Assign(tempjpeg);
+            tempbitmap.PixelFormat := pf24bit;
           end;
       end;
 
@@ -237,9 +242,8 @@ var
   filestr: TFileStream;
   pos: uint32;
 begin
-  if not(Image.PixelFormat in [pf24bit, pf32Bit]) then
-    Image.PixelFormat := pf24bit;
-
+  // if not(Image.PixelFormat in [pf24bit, pf32Bit]) then
+  // Image.PixelFormat := pf24bit;
   isAlpha := hasAlpha(Image);
   if Format = Auto then
   begin
@@ -351,7 +355,7 @@ initialization
 
 tempjpeg := TJpegimage.Create;
 tempbitmap := TBitmap.Create;
-temppng := TPNGimage.Create;
+temppng := TPNGImage.Create;
 temppsd := TPSDGraphic.Create;
 stream := TMemoryStream.Create;
 Extensions := TStringList.Create;

@@ -1,7 +1,7 @@
 {
-2013-07-27
-Taratin Alexander
-Public domain
+  2013-07-27
+  Taratin Alexander
+  Public domain
 }
 
 program CrystalAtf;
@@ -62,7 +62,7 @@ begin
         curentfile := ParamStr(j);
         normalizePath(curentfile);
 
-        if pos(curentfile, ':') = 0 then
+        if (pos(curentfile, ':') = 0) then
           curentfile := curentdir + curentfile;
 
         targetfile := '';
@@ -75,14 +75,14 @@ begin
           if pos(targetfile, ':') = 0 then
             targetfile := curentdir + targetfile;
 
-          curentfile := copy(curentfile, 0, slpos-1);
+          curentfile := copy(curentfile, 0, slpos - 1);
 
-          ConvertToATF(curentfile,targetfile, format);
+          ConvertToATF(curentfile, targetfile, format);
         end
         else if FindFirst(curentfile, faNormal, sr) = 0 then
         begin
           repeat
-            ConvertToATF(ExtractFilePath(curentfile) + sr.Name,'', format);
+            ConvertToATF(ExtractFilePath(curentfile) + sr.Name, '', format);
           until FindNext(sr) <> 0;
           FindClose(sr);
         end;

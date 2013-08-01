@@ -1,7 +1,7 @@
 {
-2013-07-27
-Taratin Alexander
-Public domain
+  2013-07-27
+  Taratin Alexander
+  Public domain
 }
 
 unit FastAlg;
@@ -189,20 +189,33 @@ var
   y: uint32;
   x: uint32;
   src_pointer: PFColorA;
+  a: byte;
 begin
+  Result := false;
   if Src.PixelFormat = pf24bit then
-    Exit(false);
+    Exit;
   for y := 0 to Src.Height - 1 do
   begin
     src_pointer := Src.ScanLine[y];
     for x := 0 to Src.Width - 1 do
     begin
-      if src_pointer.a <> 255 then
-        Exit(True);
+      a := src_pointer.a;
+      if a = 0 then
+      begin
+        src_pointer.r := 0;
+        src_pointer.g := 0;
+        src_pointer.b := 0;
+      end
+      else if a <> 255 then
+      begin
+        Result := true;
+        src_pointer.r := src_pointer.r * 255 div a;
+        src_pointer.g := src_pointer.g * 255 div a;
+        src_pointer.b := src_pointer.b * 255 div a;
+      end;
       Inc(src_pointer);
     end;
   end;
-  Result := false;
 end;
 
 procedure GetColor(var Src: TBitmap; Dst: Pointer; ColorSize: Byte = 4);
@@ -304,7 +317,7 @@ begin
     POP     EDX
   end;
   if (i and (1 shl 23)) <> 0 then
-    Result := True;
+    Result := true;
 end;
 
 procedure BitmapAntialias2X(var SrcBitmap, DstBitmap: TBitmap);
